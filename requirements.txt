@@ -1,0 +1,7 @@
+numpy
+matplotlib
+scipy
+librosa
+sounddevice
+soundfile
+PyQt6
