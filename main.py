@@ -13,7 +13,6 @@ class SampleRateError(Exception):
         super().__init__(self.message)
 
 
-
 def record_audio(filename, duration=3, samplerate=16000, device='pipewire'):
     """
     Record a snippet of audio from default device and save it as an WAV file.
@@ -40,11 +39,37 @@ def compute_spectrum(signal, samplerate=16000):
     frequencies = np.fft.rfftfreq(n=len(signal), d=1/samplerate)
     return frequencies, mag
 
+def compute_spectrogram(signal, samplerate=16000, frame_len=400, hop=160):
+    hamming = np.hamming(frame_len)
+    M = 1 + (len(signal) - frame_len)//hop
+    frames = []
+    times = []
+    frequencies = np.fft.rfftfreq(n=frame_len, d=1/samplerate)
+    for m in range(M):
+        frame_start = m * hop
+        frame_end = frame_start + frame_len
+        hammed_signal = signal[frame_start:frame_end] * hamming
+        dft = np.fft.rfft(a=hammed_signal)
+        tm = (m*hop + frame_len/2)/samplerate
+        times.append(tm)
+        frames.append(np.abs(dft))
+    frames = np.array(frames)
+    times = np.array(times)
+    return frames, frequencies, times
+
+def plot_spectrogram(frames, frequencies, times):
+    x_labels = times
+    y_labels = frequencies
+    values_2d = frames.T
+    values_2d = 20 * np.log10(values_2d + 1e-10)
+    plt.pcolormesh(x_labels, y_labels, values_2d)
+    plt.xlabel("Time [s]")
+    plt.ylabel("Frequency [Hz]")
+    plt.colorbar(label="Magnitude [dB]")
+    plt.show()
+
 
 if __name__ == "__main__":
-    audio = record_audio("somefilev6")
-    f, m = compute_spectrum(audio)
-    plt.plot(f, m)
-    plt.xlabel("Frequency [Hz]")
-    plt.ylabel("Magnitude")
-    plt.show()
+    audio = record_audio("testing")
+    frames, freq, times = compute_spectrogram(signal=audio)
+    plot_spectrogram(frames=frames, frequencies=freq, times=times)
