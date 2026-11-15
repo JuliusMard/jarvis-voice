@@ -57,7 +57,7 @@ def compute_spectrogram(signal, samplerate=16000, frame_len=400, hop=160):
     times = np.array(times)
     return frames, frequencies, times
 
-def plot_spectrogram(frames, frequencies, times):
+def plot_spectrogram(frames, frequencies, times, title=None):
     x_labels = times
     y_labels = frequencies
     values_2d = frames.T
@@ -65,6 +65,8 @@ def plot_spectrogram(frames, frequencies, times):
     plt.pcolormesh(x_labels, y_labels, values_2d)
     plt.xlabel("Time [s]")
     plt.ylabel("Frequency [Hz]")
+    if title is not None:
+        plt.title(title)
     plt.colorbar(label="Magnitude [dB]")
     plt.show()
 
