@@ -28,6 +28,8 @@ def record_audio(filename, duration=3, samplerate=16000, device='pipewire'):
 def load_audio(filepath, samplerate=16000):
     data, sr = sf.read(filepath)
     if sr >= samplerate:
+        if data.ndim > 1:
+            data = np.mean(a=data, axis=1)
         res = librosa.resample(y=data, orig_sr=sr, target_sr=samplerate)
     else:
         raise SampleRateError("Sorry, you need to increase the sampling rate of the audio")
