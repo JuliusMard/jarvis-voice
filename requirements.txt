@@ -5,3 +5,4 @@ librosa
 sounddevice
 soundfile
 PyQt6
+torch

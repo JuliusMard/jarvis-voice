@@ -26,7 +26,7 @@ audio → 16 kHz mono → STFT (25 ms frames, 10 ms hop) → mel filterbank (64 
 ## Setup
 
 Requires Python 3.14+ and the PortAudio system library
-(Arch: `sudo pacman -S portaudio`, Ubuntu: `sudo apt install libportaudio2`).
+(Arch: `sudo pacman -S portaudio`, Ubuntu: `sudo apt install libportaudio2`). Additionally install PyTorch for your system using pytorch.org first.
 
     git clone https://github.com/JuliusMard/jarvis-voice.git
     cd jarvis-voice

@@ -70,6 +70,7 @@ def plot_spectrogram(frames, frequencies, times, title=None):
     if title is not None:
         plt.title(title)
     plt.colorbar(label="Magnitude [dB]")
+    plt.savefig("figures/spectrogram.png", dpi=150)
     plt.show()
 
 def melspectrogram(signal, sr=16000, hop_length=160):
@@ -80,7 +81,6 @@ def melspectrogram(signal, sr=16000, hop_length=160):
     S_dB = librosa.power_to_db(S, ref=np.max)
     return S_dB
 
-
 def plot_melspectrogram(S, sr=16000, hop_length=160):
     fig, ax = plt.subplots()
     img = librosa.display.specshow(S, x_axis='time', y_axis='mel', sr=sr, fmax=8000, ax=ax, hop_length=hop_length)
@@ -90,6 +90,6 @@ def plot_melspectrogram(S, sr=16000, hop_length=160):
 
 
 if __name__ == "__main__":
-    data, sr = load_audio("testing.wav")
-    S = melspectrogram(data)
-    plot_melspectrogram(S)
+    s = record_audio('recording')
+    frames, frequencies, times = compute_spectrogram(signal=s)
+    plot_spectrogram(frames=frames, frequencies=frequencies, times=times)
